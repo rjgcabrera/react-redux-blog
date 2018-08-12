@@ -1,4 +1,4 @@
-import 'axios' from axios;
+import axios from 'axios';
 import API_KEY from '../../config.js';
 
 export const FETCH_POSTS = 'fetch_posts';
@@ -8,7 +8,7 @@ export function fetchPosts() {
   const request = axios.get(`${ROOT_URL}/posts${API_KEY}`);
 
   return {
-    type: FETCH_POSTS
+    type: FETCH_POSTS,
     payload: request
   };
 }
