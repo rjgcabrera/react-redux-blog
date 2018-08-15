@@ -11,6 +11,7 @@ class PostsNew extends Component {
           type="text"
           {...field.input}
         />
+        {field.meta.touched ? field.meta.error : ''}
       </div>
     );
   }
@@ -24,13 +25,20 @@ class PostsNew extends Component {
           type="textarea"
           {...field.input}
         />
+        {field.meta.touched ? field.meta.error : ''}
       </div>
     );
   }
 
+  onSubmit(values) {
+    console.log(values);
+  }
+
   render() {
+    const { handleSubmit } = this.props;
+
     return(
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title"
           name="title"
@@ -46,6 +54,7 @@ class PostsNew extends Component {
           name="content"
           component={this.renderTextArea}
         />
+      <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     );
   }
@@ -76,3 +85,4 @@ export default reduxForm({
   validate,
   form: 'PostsNewForm'
 })(PostsNew); // name of the particular form (in case you have multiple forms with different states)
+// reduxForm helper adds additional functionality to this form component (i.e. handleSubmit)
