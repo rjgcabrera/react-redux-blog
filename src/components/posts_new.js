@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'; // reduxForm similar to connect()
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
   renderField(field) { // field arg contains event handlers that need to be wired up to our jsx
@@ -41,7 +44,9 @@ class PostsNew extends Component {
   }
 
   onSubmit(values) {
-    console.log(values);
+    this.props.createPost(values, () => {
+      this.props.history.push("/");
+    });
   }
 
   render() {
@@ -65,6 +70,7 @@ class PostsNew extends Component {
           component={this.renderTextArea}
         />
       <button type="submit" className="btn btn-primary">Submit</button>
+      <Link className="btn btn-danger" to="/">Cancel</Link>
       </form>
     );
   }
@@ -94,5 +100,8 @@ function validate(values) {
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew); // name of the particular form (in case you have multiple forms with different states)
+})(
+  connect(null, { createPost })(PostsNew)
+); // name of the particular form (in case you have multiple forms with different states)
 // reduxForm helper adds additional functionality to this form component (i.e. handleSubmit)
+// this is how we stack 'connect-like' helpers. connect returns a valid react component which is an argument to the reduxForm helper
